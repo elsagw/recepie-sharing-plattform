@@ -2,6 +2,7 @@ package com.recipenetwork.backend.review;
 
 import com.recipenetwork.backend.auth.User;
 import com.recipenetwork.backend.recipe.ExternalRecipe;
+import com.recipenetwork.backend.saved.SavedRecipeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,6 +34,9 @@ class ReviewControllerTest {
 
     @MockBean
     private ReviewRepository reviewRepository;
+
+    @MockBean
+    private SavedRecipeService savedRecipeService;
 
     @Test
     void shouldCreateReviewForAuthenticatedUser() throws Exception {

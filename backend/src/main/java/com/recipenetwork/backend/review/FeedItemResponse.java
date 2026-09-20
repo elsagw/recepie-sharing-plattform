@@ -11,9 +11,10 @@ public record FeedItemResponse(
         String domain,
         Integer rating,
         String comment,
-        Instant createdAt) {
+        Instant createdAt,
+        boolean saved) {
 
-    public static FeedItemResponse from(Review review) {
+    public static FeedItemResponse from(Review review, boolean saved) {
         return new FeedItemResponse(
                 review.getUser().getUsername(),
                 review.getRecipe().getId(),
@@ -23,6 +24,7 @@ public record FeedItemResponse(
                 review.getRecipe().getDomain(),
                 review.getRating(),
                 review.getComment(),
-                review.getCreatedAt());
+                review.getCreatedAt(),
+                saved);
     }
 }
