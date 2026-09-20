@@ -26,6 +26,12 @@ public class Recipe {
         this.rating = rating;
     }
 
+    public Recipe(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.rating = 0.0;
+    }
+
     public Long getId() {
         return id;
     }
