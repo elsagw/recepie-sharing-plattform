@@ -104,8 +104,16 @@ async function publishReview() {
   try {
     const existing = feed.value.find((item) => item.recipeId === preview.value.id && item.username === user.value.username)
     const data = { rating: reviewForm.value.rating, comment: reviewForm.value.comment }
-    if (existing) await api.updateReview(preview.value.id, data)
-    else await api.createReview({ recipeId: preview.value.id, ...data })
+    if (existing) {
+      await api.updateReview(preview.value.id, data)
+    } else {
+      try {
+        await api.createReview({ recipeId: preview.value.id, ...data })
+      } catch (err) {
+        if (err.status !== 409) throw err
+        await api.updateReview(preview.value.id, data)
+      }
+    }
     reviewForm.value = { url: '', rating: 8, comment: '' }
     preview.value = null
     await loadFeed()

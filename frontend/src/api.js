@@ -18,7 +18,9 @@ async function request(path, options = {}) {
     } catch {
       // Keep the HTTP status when the server returns no JSON error body.
     }
-    throw new Error(message)
+    const error = new Error(message)
+    error.status = response.status
+    throw error
   }
 
   if (response.status === 204) {
