@@ -3,6 +3,7 @@ package com.recipenetwork.backend.recipe;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,6 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @WebMvcTest(RecipeController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class RecipeControllerTest {
 
     @Autowired
@@ -26,11 +28,13 @@ class RecipeControllerTest {
     @MockBean
     private RecipeRepository recipeRepository;
 
+    @MockBean
+    private com.recipenetwork.backend.auth.UserRepository userRepository;
+
     @Test
     void shouldReturnRecipesFromRepository() throws Exception {
         when(recipeRepository.findAll()).thenReturn(List.of(
-                new Recipe(1L, "Spaghetti Carbonara", "Creamy pasta with pancetta and parmesan.", 4.8)
-        ));
+                new Recipe(1L, "Spaghetti Carbonara", "Creamy pasta with pancetta and parmesan.", 4.8)));
 
         mockMvc.perform(get("/api/recipes"))
                 .andExpect(status().isOk())
@@ -45,8 +49,8 @@ class RecipeControllerTest {
         when(recipeRepository.save(any(Recipe.class))).thenReturn(savedRecipe);
 
         mockMvc.perform(post("/api/recipes")
-                        .contentType(APPLICATION_JSON)
-                        .content("{\"title\":\" Tomato Soup \",\"description\":\" A warm tomato soup. \"}"))
+                .contentType(APPLICATION_JSON)
+                .content("{\"title\":\" Tomato Soup \",\"description\":\" A warm tomato soup. \"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(4))
                 .andExpect(jsonPath("$.title").value("Tomato Soup"));

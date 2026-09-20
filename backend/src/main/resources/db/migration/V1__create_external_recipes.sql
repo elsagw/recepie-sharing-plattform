@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS external_recipes (
+    id BIGSERIAL PRIMARY KEY,
+    source_url VARCHAR(2048) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    image_url VARCHAR(2048),
+    domain VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
